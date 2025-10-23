@@ -1,5 +1,6 @@
 package ie.atu.lab3cicddp.service;
 
+import ie.atu.lab3cicddp.controller.errorHandling.DuplicateException;
 import ie.atu.lab3cicddp.model.Passenger;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class PassengerService {
     // Add new passenger — prevent duplicates using ID check
     public Passenger create(Passenger p) {
         if (findById(p.getPassengerID()).isPresent()) {
-            throw new IllegalArgumentException("PassengerId already exists");
+            throw new DuplicateException("Passenger with id " + p.getPassengerID() + " already exists");
         }
         store.add(p);
         return p;
