@@ -21,7 +21,7 @@ class PassengerServiceTest {
     @Test
     void createThenFindById() {
         Passenger p = Passenger.builder()
-                .passengerID("P1")
+                .passengerId("P1")
                 .name("Paul")
                 .email("paul@atu.ie")
                 .build();
@@ -36,14 +36,14 @@ class PassengerServiceTest {
     @Test
     void duplicateIdThrows() {
         service.create(Passenger.builder()
-                .passengerID("P2")
+                .passengerId("P2")
                 .name("Bob")
                 .email("bob@atu.ie")
                 .build());
 
         assertThrows(IllegalArgumentException.class, () ->
                 service.create(Passenger.builder()
-                        .passengerID("P2")
+                        .passengerId("P2")
                         .name("Bobby")
                         .email("bob@xx.com")
                         .build())

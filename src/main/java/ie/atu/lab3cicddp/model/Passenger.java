@@ -8,13 +8,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Passenger {
-    @NotBlank @Size(max=40)
-    private String passengerID;
-    @NotBlank @Size(max=60)
+    @NotBlank @Size(max = 40)
+    private String passengerId;
+
+    @NotBlank @Size(max = 60)
     private String name;
+
     @NotBlank @Email
     private String email;
-
 }

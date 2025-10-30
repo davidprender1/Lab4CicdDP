@@ -1,7 +1,6 @@
 package ie.atu.lab3cicddp.controller.errorHandling;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,25 +12,28 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandling {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ExceptionDetails>> showExceptionDetails(MethodArgumentNotValidException mae)
-    {
-        List<ExceptionDetails> errorlist = new ArrayList<>();
-        for(FieldError fieldError : mae.getBindingResult().getFieldErrors())
-        {
-        ExceptionDetails exceptionDetails = new ExceptionDetails();
-        exceptionDetails.setFirstName(fieldError.getField());
-        exceptionDetails.setFieldValue(fieldError.getDefaultMessage());
 
+    // 400 – validation errors (return a list of {fieldName, fieldValue})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ExceptionDetails>> showExceptionDetails(MethodArgumentNotValidException mae) {
+        List<ExceptionDetails> errorList = new ArrayList<>();
+        for (FieldError fe : mae.getBindingResult().getFieldErrors()) {
+            errorList.add(new ExceptionDetails(fe.getField(), fe.getDefaultMessage()));
         }
-        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorlist);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
     }
+
+    // 409 – duplicate
     @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<ExceptionDetails> showDupError(DuplicateException de)
-    {
-        ExceptionDetails exceptionDetails = new ExceptionDetails();
-        exceptionDetails.setFirstName("Passenger ID");
-        exceptionDetails.setFieldValue(de.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionDetails);
+    public ResponseEntity<ExceptionDetails> showDupError(DuplicateException ex) {
+        ExceptionDetails details = new ExceptionDetails("passengerID", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(details);
+    }
+
+    // 404 – not found
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ExceptionDetails> notFound(NotFoundException ex) {
+        ExceptionDetails details = new ExceptionDetails("resource", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(details);
     }
 }

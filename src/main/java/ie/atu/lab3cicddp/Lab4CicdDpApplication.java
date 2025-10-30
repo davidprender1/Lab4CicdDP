@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Lab3CicdDpApplication {
-
+public class Lab4CicdDpApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Lab3CicdDpApplication.class, args);
+        SpringApplication.run(Lab4CicdDpApplication.class, args);
     }
-
 }
+
